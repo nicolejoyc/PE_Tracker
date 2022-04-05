@@ -78,10 +78,12 @@ const endTask = async function(id) {
 	timeStampEnd = new Date();
 	timeElapsed = Math.abs(timeStampEnd - timeStampStart);
 
+	// ensures correct formatting
 	function padTo2Digits(num) {
 		return num.toString().padStart(2, '0');
 	}
 
+	// function for timeElapsed to be converted to correct format
 	function convertMsToTime(milliseconds) {
 		let seconds = Math.floor(milliseconds / 1000);
 		let minutes = Math.floor(seconds / 60);
@@ -96,6 +98,7 @@ const endTask = async function(id) {
 		)}`;
 	}
 
+	// send info to be stored (automatically) into the database
 	const response = await fetch('/log', {
 		method: 'POST',
 		headers: {
@@ -110,14 +113,15 @@ const endTask = async function(id) {
 		})
 	});
 	const result = await response.json();
-	console.log(result);
 
 
+	// update timeStampStart variable to hold current timeStamp
 	timeStampStart = timeStampEnd;
 }
 
 const logTask = async function(id) {
 
+	// validate student info fields before anything else
 	if (document.getElementById("studentName").value === "" || document.getElementById("school").value === "") {
 		alert("Please fill out the student information before proceeding.");
 	} else {
@@ -139,7 +143,31 @@ const logTask = async function(id) {
 			endTask(currentTaskId);
 		}
 		
+		// update the currentTaskId
 		currentTaskId = id;
+	}
+
+};
+
+// click handler for end tracking button
+const endTracking = async function() {
+
+	if (document.getElementById("studentName").value !== "" && document.getElementById("school").value !== "") {
+
+		// as long as a behavior is being tracked, track the final behavior
+		// and set all the buttons back to grey
+		if (timeStampStart !== null) {
+			
+			// call endTask for the task to be automatically added to the db
+			endTask(currentTaskId);
+			for (let i = 1; i <= 10; i++) {
+				document.getElementById(i).style.backgroundColor = 'lightgrey';
+			}
+		} else {
+			alert("You have not begun a tracking session yet.")
+		}
+	} else {
+		alert("Please fill out the student information before proceeding.");
 	}
 
 };

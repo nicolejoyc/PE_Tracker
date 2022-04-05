@@ -1,25 +1,22 @@
-CREATE TABLE users (
-	id SERIAL PRIMARY KEY,
-	email text NOT NULL,
-	password text NOT NULL
-);
+DROP TABLE users;
+
+DROP TABLE students;
 
 CREATE TABLE students (
 	id SERIAL PRIMARY KEY,
 	name TEXT NOT NULL,
-	school INT NOT NULL,
-	expires DATE NOT NULL
+	school INT NOT NULL
 );
+
+DROP TABLE schools;
 
 CREATE TABLE schools (
 	id SERIAL PRIMARY KEY,
-	name TEXT NOT NULL,
-	address TEXT NOT NULL
+	name TEXT NOT NULL
 );
 
 CREATE TABLE observations (
 	id SERIAL PRIMARY KEY,
-	users_id INT NOT NULL,
 	students_id INT NOT NULL,
 	tasks_id INT NOT NULL,
 	duration INTERVAL NOT NULL
@@ -32,3 +29,14 @@ CREATE TABLE tasks (
 	
 INSERT INTO tasks (name) VALUES
 	('Planned Pres.');
+
+INSERT INTO tasks (name) VALUES
+	('Response Pres.'),
+	('Monitoring'),
+	('Perform. Feedbk.'),
+	('Motiv. Feedbk'),
+	('Beg/End Class'),
+	('Equip. Mgt.'),
+	('Organization'),
+	('Behavior Mgt.'),
+	('Other Tasks');

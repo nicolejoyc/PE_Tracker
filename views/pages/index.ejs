@@ -3,14 +3,67 @@
 <head>
 	<title>PE Tracker</title>
 	<meta charset="UTF-8">
+	<style>
+		button {
+			display: block;
+			height: 3rem;
+			margin-bottom: 1rem;
+			font-weight: bold;
+			width: 10rem;
+		}
+		#end {
+			background-color: red;
+			color: white;
+			margin-top: 3.6rem;
+		}
+		h2 {
+			border-bottom: 1px solid black;
+		}
+		h1, h2 {
+			margin: 0;
+		}
+		#sectionStudentInfo {
+			float: left;
+			width: auto;
+		}
+		#sectionBehaviors {
+			float: left;
+			margin-right: 5%;
+		}
+		label {
+			display: block;
+		}
+	</style>
 </head>
 <body>
-	<h1>PE Tracker</h1>
-	<% tasks.forEach(function(r) {%>
-		<button id='<%= r.id %>'
-			onClick='javascript:logTask(<%= r.id %>);'><%= r.name %>
-		</button>
-	<% }); %>
+
+	<header>
+		<h1>UW-L Modified P.E. Tracker</h1>
+		<h2>Physical Education Teacher Assessment Instrument</h2>
+	</header>
+
+	<main>
+		<section id="sectionBehaviors">
+			<h3>Teacher Behavior</h3>
+			<% tasks.forEach(function(r) {%>
+				<button id='<%= r.id %>'
+					onClick='javascript:logTask(<%= r.id %>);'><%= r.name %>
+				</button>
+			<% }); %>
+		</section>
+		
+		<section id="sectionStudentInfo">
+			<h3>Student/Instructor Information</h3>
+			<label for="studentName">Student's Name</label>
+			<input type="text" id="studentName">
+			<br><br>
+			<label for="school">School Name</label>
+			<input type="text" id="school">
+
+			<button id="end">End Tracking</button>
+		</section>
+	</main>
+
 	<script>
 let currentTaskId = null;
 

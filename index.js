@@ -1,4 +1,4 @@
-const express = require ('express');
+const express = require('express');
 const path = require('path');
 const PORT = process.env.PORT || 5000;
 const { Pool } = require('pg');
@@ -44,7 +44,7 @@ LEFT JOIN pg_catalog.pg_attribute AS a
 ON c.oid = a.attrelid AND a.attnum > 0
 LEFT JOIN pg_catalog.pg_type AS t
 ON a.atttypid = t.oid
-WHERE c.relname IN ('users', 'observations', 'students', 'schools', 'tasks')
+WHERE c.relname IN ('observations', 'students', 'schools', 'tasks')
 ORDER BY c.relname, a.attnum;
 `);
 
@@ -68,14 +68,14 @@ console.log(obs.rows[0].minutes);
 	.post('/log', async(req, res) => {
 		try {
 			const client = await pool.connect();
-			const usersId = req.body.users_id;
-			const studentsId = req.body.students_id;
+			const studentsName = req.body.students_name;
+			const school = req.body.school;
 			const tasksId = req.body.tasks_id;
 			const duration = req.body.duration;
 			
 			const sqlInsert = await client.query(
-`INSERT INTO observations (users_id, students_id, tasks_id, duration)
-VALUES (${usersId}, ${studentsId}, ${tasksId}, ${duration})
+`INSERT INTO observations (students_name, school, tasks_id, duration)
+VALUES (${studentsName}, ${school}, ${tasksId}, ${duration})
 RETURNING id AS new_id;`);
 			console.log(`Tracking task ${tasksId}`);
 			

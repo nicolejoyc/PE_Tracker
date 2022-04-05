@@ -1,14 +1,8 @@
-DROP TABLE users;
-
-DROP TABLE students;
-
 CREATE TABLE students (
 	id SERIAL PRIMARY KEY,
 	name TEXT NOT NULL,
 	school INT NOT NULL
 );
-
-DROP TABLE schools;
 
 CREATE TABLE schools (
 	id SERIAL PRIMARY KEY,
@@ -18,6 +12,14 @@ CREATE TABLE schools (
 CREATE TABLE observations (
 	id SERIAL PRIMARY KEY,
 	students_id INT NOT NULL,
+	tasks_id INT NOT NULL,
+	duration INTERVAL NOT NULL
+);
+
+CREATE TABLE observations (
+	id SERIAL PRIMARY KEY,
+	students_name TEXT NOT NULL,
+	school TEXT NOT NULL,
 	tasks_id INT NOT NULL,
 	duration INTERVAL NOT NULL
 );

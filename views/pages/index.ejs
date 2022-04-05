@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<style>
 		button {
+			background-color: lightgrey;
 			display: block;
 			height: 3rem;
 			margin-bottom: 1rem;
@@ -60,14 +61,41 @@
 			<label for="school">School Name</label>
 			<input type="text" id="school">
 
-			<button id="end">End Tracking</button>
+			<button id="end" onClick="javascript:endTracking()">End Tracking</button>
 		</section>
 	</main>
 
 	<script>
 let currentTaskId = null;
+let timeStampStart = null;
+let timeStampEnd = null;
+let timeElapsed = null;
 
-const logTask = async function(id) {
+const endTask = async function(id) {
+	let studentName = document.getElementById("studentName").value;
+	let school = document.getElementById("school").value;
+
+	timeStampEnd = new Date();
+	timeElapsed = Math.abs(timeStampEnd - timeStampStart);
+
+	function padTo2Digits(num) {
+		return num.toString().padStart(2, '0');
+	}
+
+	function convertMsToTime(milliseconds) {
+		let seconds = Math.floor(milliseconds / 1000);
+		let minutes = Math.floor(seconds / 60);
+		let hours = Math.floor(minutes / 60);
+
+		seconds = seconds % 60;
+		minutes = minutes % 60;
+		hours = hours % 24;
+
+		return `${padTo2Digits(hours)}:${padTo2Digits(minutes)}:${padTo2Digits(
+			seconds,
+		)}`;
+	}
+
 	const response = await fetch('/log', {
 		method: 'POST',
 		headers: {
@@ -75,16 +103,45 @@ const logTask = async function(id) {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
-			users_id: -1,
-			students_id: -1,
+			students_name: "'" + studentName + "'",
+			school: "'" + school + "'",
 			tasks_id: id,
-			duration: "'+00:00:01'"
+			duration: "'" + convertMsToTime(timeElapsed) + "'"
 		})
 	});
 	const result = await response.json();
 	console.log(result);
-	
-	currentTaskId = id;
+
+
+	timeStampStart = timeStampEnd;
+}
+
+const logTask = async function(id) {
+
+	if (document.getElementById("studentName").value === "" || document.getElementById("school").value === "") {
+		alert("Please fill out the student information before proceeding.");
+	} else {
+
+		// set button color of current task to yellow
+		// and all others to default
+		currentTask = document.getElementById(id);
+		currentTask.style.backgroundColor = 'yellow';
+		for (let i = 1; i <= 10; i++) {
+			if (i !== id) {
+				document.getElementById(i).style.backgroundColor = 'lightgrey';
+			}
+		}
+
+		// check if this is ending another task
+		if (timeStampStart === null) {
+			timeStampStart = new Date();
+		} else { // if it is, add previous task to db
+			endTask(currentTaskId);
+		}
+		
+		currentTaskId = id;
+	}
+
 };
 	</script>
 </body>

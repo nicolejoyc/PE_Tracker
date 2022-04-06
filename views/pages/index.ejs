@@ -112,14 +112,14 @@ const endTask = async function(id) {
 			duration: "'" + convertMsToTime(timeElapsed) + "'"
 		})
 	});
-	const result = await response.json();
-
 
 	// update timeStampStart variable to hold current timeStamp
 	timeStampStart = timeStampEnd;
-}
+};
 
 const logTask = async function(id) {
+
+	let currentTask = null;
 
 	// validate student info fields before anything else
 	if (document.getElementById("studentName").value === "" || document.getElementById("school").value === "") {
@@ -164,7 +164,7 @@ const endTracking = async function() {
 				document.getElementById(i).style.backgroundColor = 'lightgrey';
 			}
 		} else {
-			alert("You have not begun a tracking session yet.")
+			alert("You have not begun a tracking session yet.");
 		}
 	} else {
 		alert("Please fill out the student information before proceeding.");
